@@ -1,0 +1,15 @@
+---
+- name: "Debug sudo user level3"
+  ansible.builtin.debug:
+    var: "ansible_env['SUDO_USER']"
+
+- name: "Determine connection user level3"
+  ansible.builtin.command:
+    cmd: "whoami"
+  register: "connection_user_level3"
+  changed_when: "connection_user_level3['rc'] != ''"
+  failed_when: "connection_user_level3['rc'] != 0"
+
+- name: "Debug become level 3"
+  ansible.builtin.debug:
+    var: "vars['connection_user_level3']['stdout']"

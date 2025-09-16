@@ -1,0 +1,20 @@
+---
+- name: "Debug sudo user level0"
+  ansible.builtin.debug:
+    msg: "{{ 'I ssh user \"' + ansible_env['SUDO_USER'] + '\" with Ansible ' +
+      ansible_version['string'] }}"
+
+- name: "Determine connection user level0"
+  ansible.builtin.command:
+    cmd: "whoami"
+  register: "connection_user_level0"
+  changed_when: "connection_user_level0['rc'] != ''"
+  failed_when: "connection_user_level0['rc'] != 0"
+
+- name: "Debug become level 0"
+  ansible.builtin.debug:
+    var: "vars['connection_user_level0']['stdout']"
+
+- name: "Import nested become"
+  ansible.builtin.import_tasks:
+    file: "nested_become.yml"

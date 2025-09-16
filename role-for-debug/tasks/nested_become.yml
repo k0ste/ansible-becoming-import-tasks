@@ -1,0 +1,4 @@
+---
+- name: "Import become level1"
+  ansible.builtin.import_tasks:
+    file: "level1/main.yml"

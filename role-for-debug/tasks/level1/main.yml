@@ -1,0 +1,21 @@
+---
+- name: "Debug sudo user level1"
+  ansible.builtin.debug:
+    var: "ansible_env['SUDO_USER']"
+
+- name: "Determine connection user level1"
+  ansible.builtin.command:
+    cmd: "whoami"
+  register: "connection_user_level1"
+  changed_when: "connection_user_level1['rc'] != ''"
+  failed_when: "connection_user_level1['rc'] != 0"
+
+- name: "Debug become level 1"
+  ansible.builtin.debug:
+    var: "vars['connection_user_level1']['stdout']"
+
+- name: "Import become level2"
+  ansible.builtin.include_tasks:
+    file: "level1/level2/main.yml"
+  when:
+    - "ansible_version['string'] != None"
